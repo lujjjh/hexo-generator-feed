@@ -22,15 +22,15 @@
     <published>{{ post.date.toISOString() }}</published>
     <updated>{{ post.updated.toISOString() }}</updated>
     {% if config.feed.content and post.content %}
-    <content type="html"><![CDATA[{{ post.content | safe }}]]></content>
+    <content type="html"><![CDATA[{{ post.content.replace(r/<\/?h-[^>]+>/g, '') | safe }}]]></content>
     {% endif %}
     <summary type="html">
     {% if post.description %}
-      {{ post.description }}
+      {{ post.description.replace(r/<\/?h-[^>]+>/g, '') }}
     {% elif post.excerpt %}
-      {{ post.excerpt }}
+      {{ post.excerpt.replace(r/<\/?h-[^>]+>/g, '') }}
     {% elif post.content %}
-      {{ post.content.substring(0, 140) }}
+      {{ post.content.replace(r/<\/?[^>]+>/g, '').split('\n')[0] }}
     {% endif %}
     </summary>
     {% for category in post.categories.toArray() %}
